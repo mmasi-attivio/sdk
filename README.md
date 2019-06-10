@@ -1,4 +1,4 @@
-# Attivio Platform SDK 5.6.1-SNAPSHOT
+# Attivio Platform SDK 5.6.2-SNAPSHOT
 
 ### Attivio Modules
 
