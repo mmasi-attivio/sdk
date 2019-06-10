@@ -1,22 +1,26 @@
+---
+description: >-
+  The Attivio Service Factory allows SDK users to access a set of Attivio
+  services, or create custom services, that run on a node process.
+---
+
 # Service Factory
 
-The Attivio Service Factory allows SDK users to access a set of Attivio services, or create custom services, that run on a node process.
+### Usage
 
-## Usage
-
-The Service Factory can be accessed in a variety of ways using a ServiceFactoryFactory. Below are some examples of how to gain access to the ContentStoreProvider
+The Service Factory can be accessed in a variety of ways using a `ServiceFactoryFactory`. Below are some examples of how to gain access to the `ContentStoreProvider`
 
 #### When running in an Attivio component:
 
-```text
+```java
 ServiceFactory serviceFactory = ServiceFactoryFactory.get();
 serviceFactory.getService(ContentStoreProvider.class)
 ContentStoreProvider storeProvider = serviceFactory.getService(ContentStoreProvider.class)
 ```
 
-#### When running in a separate process \(such as in an AttivioRunnable\):
+#### When running in a separate process \(such as in an `AttivioRunnable`\):
 
-```text
+```java
 String projectName = "myProject";
 String environment = "production";
 String zookeeperConnectionString = "localhost:16980";
@@ -24,7 +28,7 @@ ServiceFactory serviceFactory = ServiceFactoryFactory.getRemote(projectName, env
 ContentStoreProvider storeProvider = serviceFactory.getService(ContentStoreProvider.class)
 ```
 
-### List of Attivio services accessible through the ServiceFactory
+### List of Attivio services accessible through the Service Factory
 
 * [`IngestClient`](https://attivio.github.io/sdk-5.5-javadoc/com/attivio/sdk/client/IngestClient.html)
 * [`EventStoreApi`](https://attivio.github.io/sdk-5.5-javadoc/com/attivio/sdk/client/EventStoreApi.html)

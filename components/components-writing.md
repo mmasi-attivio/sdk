@@ -1,10 +1,6 @@
-# Writing and Testing Components
+# Writing Components
 
-Attivio makes it easy to create custom components or stages for document, query, and response \(to queries\) processing. The [README](./) page provides instructions for using maven archetypes to generate examples. This guide describes the interfaces and general processing architecture for Attivio components. Components are small chunks of Java code which are executed by the Attivio framework as documents and queries pass through the system. A good component should be focused on a small task \(such as capitalizing text\), keep little to no state, and be designed to be independent of other components in the system. These principles make components reusable in other contexts and composable.
-
-Your component may be created many times \(multiple instances\) within the same Java process. This is used for parallelization purposes and to allow dynamic changes to take place. For this reason, static data, expensive startup/shutdown code, and heavy memory use should be avoided within your components. Components whose instances need to share data should consider using the `ThreadSafe` annotation \(see below\).
-
-## Component Types
+### Component Types
 
 The first step in writing a custom component is to choose what type of component you need. The component types are broken down by basic function. Almost all components you write will be one of the first three \(which are document transformers\). When creating a new component, choose the most specific type that meets your needs.
 
@@ -19,11 +15,11 @@ The first step in writing a custom component is to choose what type of component
 | `BaseRoutingComponent` | An advanced component that can change the workflow that will be used for a system message. |
 | `MessageHandlingWorkflowStage` | An advanced catch-all component that operates on raw system messages, doing whatever it likes to them. |
 
-## The Mix-In Interfaces
+### The Mix-In Interfaces
 
 Once you have chosen a component type, you can also add a number of mix-in interfaces to the component. These allow you to indicate additional capabilities or requirements to the platform for your component.
 
-### Lifecycle
+#### Lifecycle
 
 | Name | Description |
 | :--- | :--- |
@@ -32,7 +28,7 @@ Once you have chosen a component type, you can also add a number of mix-in inter
 | `AfterAllLocalInstancesStarted` | Provides a hook for the component to do initialization after all instances of this component have been started \(`Startable.startComponent()` has been called\). |
 | `AfterLocalNodeStartup` | Provides a hook for the component to do initialization after all components in the system have been started. |
 
-### Component Configuration
+#### Component Configuration
 
 | Name | Description |
 | :--- | :--- |
@@ -48,7 +44,7 @@ Once you have chosen a component type, you can also add a number of mix-in inter
 | `HasSchemaNameProperty` | Provides option to set a schema to validate against for component |
 | `HasTokenizerProperty` | Provides option to set a tokenizer the component should use |
 
-### Miscellaneous
+#### Miscellaneous
 
 | Name | Description |
 | :--- | :--- |
@@ -58,29 +54,29 @@ Once you have chosen a component type, you can also add a number of mix-in inter
 | `SchemaUtilAware` | Provides a [`SchemaUtil`](https://attivio.github.io/sdk-5.5-javadoc/com/attivio/sdk/server/util/SchemaUtil.html) object for a component to use |
 | `SystemEventPublisherAware` | Provides a [`SystemEventPublisher`](https://attivio.github.io/sdk-5.5-javadoc/com/attivio/sdk/server/util/SystemEventPublisher.html) object for a component to use |
 
-### Annotations
+#### Annotations
 
 | Name | Description |
 | :--- | :--- |
 | `MultiOutputDocumentTransformerMode` | Used for document transformers that create multiple output documents or messages for each input document |
-| `SingleInstancePerCluster` | Indicate that maxInstances is equal to 1 for this component across the entire topology |
-| `SingleInstancePerNamedComponent` | Indicate that maxInstances per node is equal to 1 for this component for _each_ configuration of the class |
-| `SingleInstancePerNode` | Indicate that maxInstances is equal to 1 for this component for each node the class/service is running on |
+| `SingleInstancePerCluster` | Indicate that `maxInstances` is equal to 1 for this component across the entire topology |
+| `SingleInstancePerNamedComponent` | Indicate that `maxInstances` per node is equal to 1 for this component for _each_ configuration of the class |
+| `SingleInstancePerNode` | Indicate that `maxInstances` is equal to 1 for this component for each node the class/service is running on |
 | `ThreadSafe` | Indicates that the component is thread safe and does not require an object pool |
 
-## Testing your component
+### Testing your component
 
-It is important to write focused and concise unit tests for your custom components. Attivio provides a number of testing utilities and mock implementations to make writing good unit tests simple. This archetype generation referenced by the [README](./) page provides examples of the techniques described here.
+It is important to write focused and concise unit tests for your custom components. Attivio provides a number of testing utilities and mock implementations to make writing good unit tests simple. This archetype generation referenced by the README page provides examples of the techniques described here.
 
 #### Create the component
 
-```text
+```java
 MyComponent component = new MyComponent();
 ```
 
 #### Configure your component
 
-```text
+```java
 // some example properties
 component.setRate(20.3);
 component.setLabel("label");
@@ -90,13 +86,13 @@ component.setLabel("label");
 
 If your component uses any of the _lifecycle_ or _miscellaneous_ mix-ins, there is a test utility that will call them and set them up with appropriate mock implementations as needed:
 
-```text
+```java
 SdkTestUtils.startTransformer(component);
 ```
 
 #### Create a sample document to use in your test
 
-```text
+```java
 IngestDocument doc = new IngestDocument("doc1");
 doc.setField("text", "some text");
 doc.setField("cost", 2800.23);
@@ -104,13 +100,13 @@ doc.setField("cost", 2800.23);
 
 #### Process the document with your component
 
-```text
+```java
 SdkTestUtils.processDocument(doc, component);
 ```
 
 #### Assert conditions on the document
 
-```text
+```java
 Assert.assertTrue(doc.containsField("newField"));
 ```
 
