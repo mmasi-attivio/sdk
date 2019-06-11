@@ -8,10 +8,6 @@ description: >-
 
 ### Module generation
 
-{% hint style="danger" %}
-This version is for development purposes only. To gain access to this version of the SDK please contact your Attivio representative.
-{% endhint %}
-
 A new module can be generated using the maven archetype command. Generated modules follow maven conventions for code and resource file locations.
 
 ```text

@@ -1,5 +1,9 @@
 # Attivio Platform SDK 5.6.2-SNAPSHOT
 
+{% hint style="danger" %}
+This version is for development purposes only. To gain access to this version of the SDK please contact your Attivio representative.
+{% endhint %}
+
 ### Attivio Modules
 
 {% page-ref page="module-sdk.md" %}
